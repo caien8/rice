@@ -1,0 +1,61 @@
+profile > xorg
+
+additional pkg >xorg xorg-xinit bspwm sxhkd dmenu nitrogen feh picom kitty firefox arandr thunar kate vim git
+
+
+at [ ~ ]
+mkdir .config
+mkdir .config/bspwm
+mkdir .config/sxhkd
+
+cp /usr/share/doc/bspwm/examples/bspwmrc .config/bspwm/
+cp /usr/share/doc/bspwm/examples/sxhkd .config/sxhkd/
+
+
+vim .config/sxhkd/sxhkdrc
+# change terminal to kitty   (to save and exit > esc > shift + : > x > enter)
+
+cp /etc/X11/xinit/xinitrc .xinitrc
+
+vim .xinitrc
+# remove last lines below fi
+{   twm &
+    xclock -geometry .......
+    xterm -geometry .......
+    xterm -geometry .......
+    exec xterm -geometry ......
+}
+
+# add new commands
+{   setxkbmap en &
+    picom -f &
+    exec bspwm
+}
+
+
+sudo vim /etc/xdg/picom.conf
+# vsync = true             {remove if using on VM}
+
+
+startx to start window manager
+super + alt + q   to exit bspwm
+
+# launch arandr
+> got to outputs & select resoultion
+> apply settings
+> click save icon
+> set file name to display
+
+chmod +x .screenlayout/display.sh
+vim .xinitrc
+# add script before compositor(picom)
+# add new line
+{   $HOME/.screenlayout/display.sh
+}
+
+# add new-line before picom
+{   xsetroot -cursor_name left_ptr
+}
+
+
+yay -S polybar pacman-contrib pulseaudio alsa-utils
